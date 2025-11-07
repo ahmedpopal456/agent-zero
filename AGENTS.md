@@ -480,7 +480,7 @@ Create a new Epic for Azure migration work and link related architecture tasks
 Create a branch for my current feature using the proper naming conventions
 ```
 ```
-Commit all of my changes and create a PR (or append to existing PR)
+Commit (or make use of already committed items), all of my changes and create a PR (or append to existing PR)
 ```
 
 The agent automatically:
