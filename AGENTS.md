@@ -142,10 +142,10 @@ This agent provides specialized Azure infrastructure support for architecture de
 - In confluence, the pages that contain these diagrams will be labeled with the same name as the diagram files: `ARCHITECTURE-DIAGRAM-ID-001`, `NETWORK-DIAGRAM-ID-001` or any other prefix with naming, will match the file name
 - Image Format: Use Markdown image syntax: `![](https://url-to-image)`
 - Github URLs: Use direct Github links in format: `https://raw.githubusercontent.com/ahmedpopal456/{repository-name}/refs/heads/{branch-name-separated-by-slashes/{path-to-diagram-file}`
-- Image Placement: Place image after the Purpose section and before the main content tables
+- Image Placement: Place image right above the diagram tag
+- Image Position: Images should be centered in the page layout for consistency
 - Version Message: Always include descriptive version message when updating diagrams (e.g., "Updated diagram to Azure Data Flow Template")
 - Preserve Tags: Maintain automation comment tags just under the proper updated reference (e.g., `<!-- TERRAFORM-MODULE-CATALOG-DIAGRAM-ID-001 -->`)
-- Image Position: Images should be centered in the page layout for consistency
 
 IMPORTANT
 - **NEVER** add diagram references to pages unless they have to be modified or unless specifically given instructions to do so
@@ -499,4 +499,4 @@ The agent automatically:
 - Access to Slalom Atlassian instance (Confluence and Jira)
 - OAuth authentication for Atlassian MCP
 - Internet access for MCP server connections
-- Local architecture documentation repository structureP
+- Local architecture documentation repository structure
