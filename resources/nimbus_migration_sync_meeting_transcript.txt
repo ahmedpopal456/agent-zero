@@ -1,0 +1,100 @@
+Date: 2025-10-14
+Duration: 47 min
+Channel: #dev-core / Nimbus Migration Sync
+Participants:
+
+Sara (Tech Lead)
+
+Ahmed (Principal Developer)
+
+Noah (DevOps Engineer)
+
+Lina (Frontend Developer)
+
+Raj (QA Lead)
+
+[09:00:11] Sara: Morning everyone 👋 Let's kick off. Today's focus is finalizing the GCP API Gateway migration and identifying what needs to go into Jira.
+
+[09:00:21] Ahmed: Yeah, I've been reviewing the Terraform setup from the "Hydra" repo. We can probably reuse the modules but need to refactor them to support multiple environments.
+
+[09:00:38] Sara: Good call. Let's capture that as a story — "Refactor Terraform modules from Hydra for Nimbus multi-env support."
+
+[09:00:48] Noah: I'll take that one. I'll also need to create a shared VPC and subnets for the gateway. CIDRs should match the rest of the backend stack — 10.20.x.x ranges, right?
+
+[09:01:02] Sara: Correct. That should be another Jira story — "Provision shared VPC and subnets for API Gateway."
+
+[09:01:13] Lina: Wait, for the frontend, the routes /auth and /data still go through the gateway. Are we switching to IAM auth or keeping API keys?
+
+[09:01:26] Ahmed: IAM. We'll need to update the OpenAPI spec to reflect that.
+
+[09:01:35] Sara: Perfect. So "Update OpenAPI spec to include IAM auth for /auth and /data endpoints."
+
+[09:01:46] Lina: I'll do that. And I'll also configure the new routes once that's done.
+
+[09:01:53] Sara: Make sure that's a separate task — "Configure gateway routes and IAM bindings."
+
+[09:02:07] Noah: On infra — do we still want NAT and egress firewall rules separate from the shared VPC module?
+
+[09:02:15] Ahmed: Yeah, better to modularize them. We'll need a Terraform submodule for outbound rules.
+
+[09:02:25] Sara: Okay, "Implement NAT and egress firewall Terraform module."
+
+[09:02:36] Raj: For QA, are we doing any automated smoke tests after deployment?
+
+[09:02:43] Noah: We can hook Postman collections into Cloud Build as part of the pipeline.
+
+[09:02:52] Sara: Great idea. That's "Add automated post-deployment API tests using Postman."
+
+[09:03:04] Lina: Speaking of Cloud Build — are we still going with staging and prod triggers based on branch names?
+
+[09:03:13] Noah: Yup. I'll extend the pipeline: if branch = main → deploy to prod, if develop → deploy to staging.
+
+[09:03:27] Sara: Then that's "Update Cloud Build pipeline for environment-based deployment triggers."
+
+[09:03:37] Ahmed: We should also add Terraform validation to the CI. Maybe a quick terraform validate and tflint step.
+
+[09:03:48] Sara: Good catch. "Add Terraform validation and lint checks in CI pipeline."
+
+[09:04:00] Raj: Monitoring — we'll need dashboards for latency and error rates. Cloud Monitoring should handle that.
+
+[09:04:11] Sara: "Create Cloud Monitoring dashboards for API latency and error tracking."
+
+[09:04:22] Lina: Do we need alerts, too?
+
+[09:04:27] Raj: Yeah, ideally alert when error rate > 5% or p95 latency > 1s.
+
+[09:04:37] Sara: Okay, add "Configure alerting thresholds for error rate and latency."
+
+[09:04:49] Ahmed: Quick question — do we need to handle IAM bindings for different environments differently?
+
+[09:05:00] Noah: Yeah, staging can reuse the default service account, but prod should have a dedicated one.
+
+[09:05:12] Sara: Let's split that out: "Set up separate IAM service accounts for staging and prod gateways."
+
+[09:05:26] Lina: I'll handle that once the VPC is ready.
+
+[09:05:31] Sara: Perfect.
+
+[09:05:36] Raj: When do you want QA tests to kick in — after staging deploy or prod?
+
+[09:05:43] Noah: After staging deploy for now. We'll promote to prod once validated.
+
+[09:05:52] Sara: Let's include that acceptance criterion in the testing story.
+
+[09:06:03] Ahmed: Anything else from infra?
+
+[09:06:09] Noah: Maybe one more — "Centralize Terraform state in remote backend (GCS bucket)."
+
+[09:06:19] Sara: Yep. Add that to the list.
+
+[09:06:25] Lina: For my part, once routes are up, I'll test against the new endpoint URLs.
+
+[09:06:34] Sara: Make sure to note that in the acceptance criteria too.
+
+[09:06:41] Raj: Should we tag everything under epic NIM-001?
+
+[09:06:47] Sara: Exactly. Epic: Nimbus API Gateway Migration.
+
+[09:06:55] Noah: I'll draft the initial backlog items this afternoon and push them via the MCP Jira connector.
+
+[09:07:02] Sara: Awesome. Thanks everyone. Let's have all stories ready by end of day tomorrow.
