@@ -141,7 +141,7 @@ This agent provides specialized Azure infrastructure support for architecture de
 - Use file naming to identify target diagrams: `architecture_diagram_001.md`, `network_diagram_002.md` or any other prefix with naming `{prefix}_diagram_001.md`
 - In confluence, the pages that contain these diagrams will be labeled with the same name as the diagram files: `ARCHITECTURE-DIAGRAM-ID-001`, `NETWORK-DIAGRAM-ID-001` or any other prefix with naming, will match the file name
 - Image Format: Use Markdown image syntax: `![](https://url-to-image)`
-- Github URLs: Use direct Github links in format: `https://raw.githubusercontent.com/slalom/{repository-name}/refs/heads/{branch-name-separated-by-slashes/{path-to-diagram-file}`
+- Github URLs: Use direct Github links in format: `https://raw.githubusercontent.com/ahmedpopal456/{repository-name}/refs/heads/{branch-name-separated-by-slashes/{path-to-diagram-file}`
 - Image Placement: Place image after the Purpose section and before the main content tables
 - Version Message: Always include descriptive version message when updating diagrams (e.g., "Updated diagram to Azure Data Flow Template")
 - Preserve Tags: Maintain automation comment tags just under the proper updated reference (e.g., `<!-- TERRAFORM-MODULE-CATALOG-DIAGRAM-ID-001 -->`)
@@ -468,11 +468,6 @@ Provide actual cost of all Azure resources tagged with owner=emanuelle.tremblay@
 **Tag-Based Analysis:**
 ```
 Analyze all resources tagged with project=architecture-docs and provide cost optimization recommendations
-```
-
-**Automated Documentation:**
-```
-Synchronize all architectural diagrams in Confluence with the latest local file changes
 ```
 
 **Jira Integration:**
