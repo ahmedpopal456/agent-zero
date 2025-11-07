@@ -4,9 +4,13 @@ Channel: #dev-core / Nimbus Migration Sync
 Participants:
 
 Sara (Tech Lead)
+
 Ahmed (Principal Developer)
+
 Noah (DevOps Engineer)
+
 Lina (Frontend Developer)
+
 Raj (QA Lead)
 
 [09:00:11] Sara: Morning everyone 👋 Let's kick off. Today's focus is finalizing the GCP API Gateway migration and identifying what needs to go into Jira.
