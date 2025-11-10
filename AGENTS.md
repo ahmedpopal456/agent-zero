@@ -140,21 +140,23 @@ This agent provides specialized Azure infrastructure support for architecture de
 **Note that the parent field expects an issuelink schema**
 
 ## Confluence Architecture Documentation Standards
-- Use file naming to identify target diagrams: `architecture_diagram_001.md`, `network_diagram_002.md` or any other prefix with naming `{prefix}_diagram_001.md`
+- Use file naming to identify target diagrams: `architecture_diagram_001.md`, `network_diagram_002.md`, `architecture_diagram_001.jpg`, `network_diagram_002.png` or any other prefix with naming `{prefix}_diagram_001.{ext}`
 - In confluence, the pages that contain these diagrams will be labeled with the same name as the diagram files: `ARCHITECTURE-DIAGRAM-ID-001`, `NETWORK-DIAGRAM-ID-001` or any other prefix with naming, will match the file name
-- Image Format: Use Markdown image syntax: `![](https://url-to-image)`
-- Github URLs: Use direct Github links in format: `https://raw.githubusercontent.com/ahmedpopal456/{repository-name}/refs/heads/{branch-name-separated-by-slashes/{path-to-diagram-file}`
-- Image Placement: Place image right above the diagram tag
-- Image Position: Images should be centered in the page layout for consistency
-- Version Message: Always include descriptive version message when updating diagrams (e.g., "Updated diagram to Azure Data Flow Template")
+- **File Types Supported:**
+  - **Image Files** (`.jpg`, `.png`, `.svg`, etc.): Embed using Markdown image syntax: `![](https://url-to-image)`
+  - **Markdown Files** (`.md`): Embed the markdown content directly into the page as-is, maintaining all formatting, tables, and structure
+- Github URLs: Use direct Github links in format: `https://raw.githubusercontent.com/ahmedpopal456/{repository-name}/refs/heads/{branch-name-separated-by-slashes}/{path-to-diagram-file}`
+- Content Placement: Place content (image reference or embedded markdown) right above the diagram tag
+- Content Position: Content should be centered or properly formatted in the page layout for consistency
+- Version Message: Always include descriptive version message when updating diagrams (e.g., "Updated diagram to Azure Data Flow Template" or "Updated generic resource configuration from markdown")
 - Preserve Tags: Maintain automation comment tags just under the proper updated reference (e.g., `<!-- TERRAFORM-MODULE-CATALOG-DIAGRAM-ID-001 -->`). Ensure that each diagram has a tag underneath it, especially if there are multiple diagrams on the same page.
 
 ### CRITICAL TAG PLACEMENT RULES (MUST FOLLOW)
-- **EVERY diagram image MUST have its corresponding tag immediately below it** - no exceptions
-- **Tag Format:** Each tag must be on its own line directly after the image: `<!-- DIAGRAM-ID-XXX -->`
-- **Multiple Diagrams:** When a page has multiple diagrams, EACH diagram must have its own unique tag placed directly underneath it
-- **Verification Required:** Before submitting any Confluence update, verify that EVERY image has its matching tag on the line immediately following it
-- **Example Pattern (REQUIRED):**
+- **EVERY diagram/content MUST have its corresponding tag immediately below it** - no exceptions
+- **Tag Format:** Each tag must be on its own line directly after the content: `<!-- DIAGRAM-ID-XXX -->`
+- **Multiple Diagrams:** When a page has multiple diagrams/content sections, EACH one must have its own unique tag placed directly underneath it
+- **Verification Required:** Before submitting any Confluence update, verify that EVERY content section (image or embedded markdown) has its matching tag on the line immediately following it
+- **Example Pattern for Images (REQUIRED):**
   ```
   ![](https://raw.githubusercontent.com/.../diagram_001.jpg)
   <!-- DIAGRAM-ID-001 -->
@@ -162,13 +164,22 @@ This agent provides specialized Azure infrastructure support for architecture de
   ![](https://raw.githubusercontent.com/.../diagram_002.jpg)
   <!-- DIAGRAM-ID-002 -->
   ```
-- **Tag Matching:** The tag ID must match the diagram file name pattern (e.g., `azure_architecture_diagram_id_001.jpg` → `<!-- AZURE-ARCHITECTURE-DIAGRAM-ID-001 -->`)
+- **Example Pattern for Markdown Files (REQUIRED):**
+  ```
+  | Parameter | Value | Description |
+  |-----------|-------|-------------|
+  | **CIDR Range** | 10.20.0.0/28 | Primary VPC CIDR block |
+  | **Subnets** | 6 (3 public, 3 private) | Multi-AZ subnet configuration |
+  
+  <!-- GENERIC-RESOURCE-CONFIGURATION-DIAGRAM-ID-001 -->
+  ```
+- **Tag Matching:** The tag ID must match the diagram file name pattern (e.g., `azure_architecture_diagram_id_001.jpg` → `<!-- AZURE-ARCHITECTURE-DIAGRAM-ID-001 -->` or `generic_resource_configuration_diagram_id_001.md` → `<!-- GENERIC-RESOURCE-CONFIGURATION-DIAGRAM-ID-001 -->`)
 
 IMPORTANT
 - **NEVER** add diagram references to pages unless they have to be modified or unless specifically given instructions to do so
 - **NEVER** execute page updates if the user is locally on another branch than `main`. If they are on the `main` branch, then ensure that NO changes are pending (abort the operation if there are)
-- **ALWAYS** verify tag placement for EVERY diagram before calling `updateConfluencePage`
-- **MANDATORY CHECK:** Count the number of images and verify the same number of corresponding tags exist, each placed directly below its image
+- **ALWAYS** verify tag placement for EVERY diagram/content before calling `updateConfluencePage`
+- **MANDATORY CHECK:** Count the number of content sections (images or embedded markdown) and verify the same number of corresponding tags exist, each placed directly below its content
 
 ## Using Terraform guidelines as additional agent context
 
