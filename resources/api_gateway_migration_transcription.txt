@@ -3,91 +3,92 @@ Duration: 15 min
 Channel: #dev-core / Migration to API Gateway
 
 Participants:
-Leila (Delivery Lead)
-Joel (Scrum Master)
-Sophie (Devops Engineer)
+Leïla Tazi (Delivery Lead)
+Joel Lian Villeneuve Lian Villeneuve (Scrum Master)
+Sophie Curinier (Devops Engineer)
 
 Meeting transcription: 
 
-Leïla : Bonjour à tous 👋 On commence ? Aujourd’hui, on se concentre sur la finalisation de la migration vers API Gateway et sur les éléments à ajouter dans Jira.
+Leïla Tazi : Bonjour à tous 👋 On commence ? Aujourd’hui, on se concentre sur la finalisation de la migration vers API Gateway et sur les éléments à ajouter dans Jira.
  
-Joël : J’ai passé en revue la configuration Terraform du dépôt “Hydra”. On peut probablement réutiliser les modules, mais il faudra les refactorer pour gérer plusieurs environnements.
+Joel Lian Villeneuve : J’ai passé en revue la configuration Terraform du dépôt “Hydra”. On peut probablement réutiliser les modules, mais il faudra les refactorer pour gérer plusieurs environnements.
  
-Sophie : Bonne idée. On crée une tâche : « Refactorer les modules Terraform du dépôt Hydra pour supporter plusieurs environnements dans Nimbus ».
+Sophie Curinier : Bonne idée. On crée une tâche : « Refactorer les modules Terraform du dépôt Hydra pour supporter plusieurs environnements dans Nimbus ».
  
-Leïla : Je prends celle-là. Je vais aussi créer un VPC partagé et des sous-réseaux pour le gateway. Les CIDR doivent correspondre au reste de la stack backend — plages en 10.20.x.x, c’est bien ça ?
+Leïla Tazi : Je prends celle-là. Je vais aussi créer un VPC partagé et des sous-réseaux pour le gateway. Les CIDR doivent correspondre au reste de la stack backend — plages en 10.20.x.x, c’est bien ça ?
  
-Joël : Exact. On ajoute une autre tâche : « Provisionner un VPC partagé et des sous-réseaux pour l’API Gateway ».
+Joel Lian Villeneuve : Exact. On ajoute une autre tâche : « Provisionner un VPC partagé et des sous-réseaux pour l’API Gateway ».
  
-Sophie : Pour le frontend, les routes /auth et /data passent encore par le gateway. On passe à l’authentification IAM ou on garde les clés API ?
+Sophie Curinier : Pour le frontend, les routes /auth et /data passent encore par le gateway. On passe à l’authentification IAM ou on garde les clés API ?
  
-Joël : On passe à IAM. Il faudra mettre à jour le spec OpenAPI en conséquence.
+Joel Lian Villeneuve : On passe à IAM. Il faudra mettre à jour le spec OpenAPI en conséquence.
  
-Leïla : Parfait. Nouvelle tâche : « Mettre à jour le spec OpenAPI pour inclure l’authentification IAM sur les endpoints /auth et /data ».
+Leïla Tazi : Parfait. Nouvelle tâche : « Mettre à jour le spec OpenAPI pour inclure l’authentification IAM sur les endpoints /auth et /data ».
  
-Sophie : Je m’en occupe. Et je configurerai les nouvelles routes une fois que ce sera fait.
+Sophie Curinier : Je m’en occupe. Et je configurerai les nouvelles routes une fois que ce sera fait.
  
-Joël : Fais-en une tâche séparée : « Configurer les routes du gateway et les bindings IAM ».
+Joel Lian Villeneuve : Fais-en une tâche séparée : « Configurer les routes du gateway et les bindings IAM ».
  
-Leïla : Côté infrastructure — on garde les règles NAT et egress firewall séparées du module VPC partagé ?
+Leïla Tazi : Côté infrastructure — on garde les règles NAT et egress firewall séparées du module VPC partagé ?
  
-Joël : Oui, mieux vaut les modulariser. On aura besoin d’un sous-module Terraform pour les règles sortantes.
+Joel Lian Villeneuve : Oui, mieux vaut les modulariser. On aura besoin d’un sous-module Terraform pour les règles sortantes.
  
-Sophie : Ok, on ajoute : « Implémenter un module Terraform pour NAT et les règles egress ».
+Sophie Curinier : Ok, on ajoute : « Implémenter un module Terraform pour NAT et les règles egress ».
  
-Leïla : Pour les tests QA, on prévoit des tests automatisés après le déploiement ?
+Leïla Tazi : Pour les tests QA, on prévoit des tests automatisés après le déploiement ?
  
-Joël : On peut intégrer des collections Postman dans Cloud Build, dans le pipeline.
+Joel Lian Villeneuve : On peut intégrer des collections Postman dans Cloud Build, dans le pipeline.
  
-Sophie : Super idée. Tâche : « Ajouter des tests API automatisés post-déploiement avec Postman ».
+Sophie Curinier : Super idée. Tâche : « Ajouter des tests API automatisés post-déploiement avec Postman ».
  
-Leïla : Concernant Cloud Build — on garde les triggers staging et prod selon les noms de branches ?
+Leïla Tazi : Concernant Cloud Build — on garde les triggers staging et prod selon les noms de branches ?
  
-Joël : Oui. Je vais étendre le pipeline : si branche = main → déploiement en prod, si develop → staging.
+Joel Lian Villeneuve : Oui. Je vais étendre le pipeline : si branche = main → déploiement en prod, si develop → staging.
  
-Sophie : Donc : « Mettre à jour le pipeline Cloud Build pour des triggers de déploiement basés sur les branches ».
+Sophie Curinier : Donc : « Mettre à jour le pipeline Cloud Build pour des triggers de déploiement basés sur les branches ».
  
-Leïla : On devrait aussi ajouter une validation Terraform dans le CI. Un petit terraform validate et tflint.
+Leïla Tazi : On devrait aussi ajouter une validation Terraform dans le CI. Un petit terraform validate et tflint.
  
-Joël : Bonne idée. Tâche : « Ajouter la validation Terraform et les vérifications lint dans le pipeline CI ».
+Joel Lian Villeneuve : Bonne idée. Tâche : « Ajouter la validation Terraform et les vérifications lint dans le pipeline CI ».
  
-Sophie : Pour le monitoring — on aura besoin de dashboards pour la latence et les taux d’erreur. Cloud Monitoring peut gérer ça.
+Sophie Curinier : Pour le monitoring — on aura besoin de dashboards pour la latence et les taux d’erreur. Cloud Monitoring peut gérer ça.
  
-Leïla : Tâche : « Créer des dashboards Cloud Monitoring pour la latence et le suivi des erreurs API ».
+Leïla Tazi : Tâche : « Créer des dashboards Cloud Monitoring pour la latence et le suivi des erreurs API ».
  
-Joël : On ajoute des alertes aussi ?
+Joel Lian Villeneuve : On ajoute des alertes aussi ?
  
-Sophie : Oui, idéalement quand le taux d’erreur > 5 % ou la latence p95 > 1s.
+Sophie Curinier : Oui, idéalement quand le taux d’erreur > 5 % ou la latence p95 > 1s.
  
-Leïla : Tâche : « Configurer les seuils d’alerte pour le taux d’erreur et la latence ».
+Leïla Tazi : Tâche : « Configurer les seuils d’alerte pour le taux d’erreur et la latence ».
  
-Joël : Petite question — on gère les bindings IAM différemment selon l’environnement ?
+Joel Lian Villeneuve : Petite question — on gère les bindings IAM différemment selon l’environnement ?
  
-Sophie : Oui, staging peut utiliser le service account par défaut, mais prod doit en avoir un dédié.
+Sophie Curinier : Oui, staging peut utiliser le service account par défaut, mais prod doit en avoir un dédié.
  
-Leïla : On sépare ça : « Créer des comptes de service IAM distincts pour les gateways staging et prod ».
+Leïla Tazi : On sépare ça : « Créer des comptes de service IAM distincts pour les gateways staging et prod ».
  
-Joël : Je m’en occupe une fois le VPC prêt.
+Joel Lian Villeneuve : Je m’en occupe une fois le VPC prêt.
  
-Sophie : Parfait.
-Leïla : Pour les tests QA, on les lance après le déploiement en staging ou en prod ?
+Sophie Curinier : Parfait.
+
+Leïla Tazi : Pour les tests QA, on les lance après le déploiement en staging ou en prod ?
  
-Joël : Pour l’instant, après staging. On passe en prod une fois validé.
+Joel Lian Villeneuve : Pour l’instant, après staging. On passe en prod une fois validé.
  
-Sophie : On inclut ce critère d’acceptation dans la tâche de test.
+Sophie Curinier : On inclut ce critère d’acceptation dans la tâche de test.
  
-Leïla : Autre chose côté infra ?
+Leïla Tazi : Autre chose côté infra ?
  
-Joël : Oui — « Centraliser le state Terraform dans un backend distant (bucket GCS) ».
+Joel Lian Villeneuve : Oui — « Centraliser le state Terraform dans un backend distant (bucket GCS) ».
  
-Sophie : Ajouté. Une fois les routes configurées, je testerai les nouvelles URLs des endpoints.
+Sophie Curinier : Ajouté. Une fois les routes configurées, je testerai les nouvelles URLs des endpoints.
  
-Leïla : Note ça aussi dans les critères d’acceptation.
+Leïla Tazi : Note ça aussi dans les critères d’acceptation.
  
-Joël : On tague tout sous l’epic NIM-001 ?
+Joel Lian Villeneuve : On tague tout sous l’epic NIM-001 ?
  
-Sophie : Exactement. Epic : Migration vers Nimbus API Gateway.
+Sophie Curinier : Exactement. Epic : Migration vers Nimbus API Gateway.
  
-Leïla : Je rédige les premiers items du backlog cet après-midi et je les pousse via le connecteur Jira MCP.
+Leïla Tazi : Je rédige les premiers items du backlog cet après-midi et je les pousse via le connecteur Jira MCP.
  
-Joël : Parfait. Merci à tous. On vise d’avoir toutes les tâches prêtes d’ici demain soir.
+Joel Lian Villeneuve : Parfait. Merci à tous. On vise d’avoir toutes les tâches prêtes d’ici demain soir.

@@ -131,12 +131,13 @@ This agent provides specialized Azure infrastructure support for architecture de
 # Azure Infrastructure & Documentation Standards
 
 ## Meeting Transcript Processing Standards
-- Extract actionable items from transcription files under `resources/` (user must choose which transcription), and assign to appropriate team members
-- Before actioning updates/creation on JIRA, output the entire set of Epics, Tasks, Bugs & Stories for the user to validate
-before moving forward. This is an IMPORTANT gatekeeping 
+- Extract actionable items from transcription files under `resources/` (user must choose which transcription). Created JIRA tasks MUST not be assigned directly. Instead, assignation details MUST be in the description.
+- Before actioning updates/creation on JIRA, output the entire set of Epics, Tasks, Bugs & Stories for the user to validate before moving forward. This is an IMPORTANT gatekeeping  
 - Tag issues with relevant Azure service categories (compute, networking, storage, etc.)
 - Link related Confluence pages to Jira issues for full context
 - Prioritize issues based on meeting urgency and project timelines
+
+**Note that the parent field expects an issuelink schema**
 
 ## Confluence Architecture Documentation Standards
 - Use file naming to identify target diagrams: `architecture_diagram_001.md`, `network_diagram_002.md` or any other prefix with naming `{prefix}_diagram_001.md`
@@ -233,14 +234,47 @@ From the GitHub MCP server, only the following tools should be used to create br
 
 Ensure that working branch adheres to the following naming convention: `feat/<<username>>/<<description-of-feat>>`
 
+### MANDATORY PRE-COMMIT VALIDATION FOR TERRAFORM FILES
+
+**CRITICAL**: Before committing ANY Terraform files (.tf, modules, examples), you MUST:
+
+1. **Read and validate against guidelines**:
+   - Read `docs/guidelines/terraform/security.md` in full
+   - Read `docs/guidelines/terraform/standards.md` in full
+   - These files are AUTHORITATIVE and override all generic defaults
+
+2. **Validate ALL Terraform files against security.md checklist**:
+   - ✅ All of the validation items defined in the file
+
+3. **Validate ALL modules against standards.md checklist**:
+   - ✅ All of the validation items defined in the file
+
+4. **Validate root-level Terraform structure**:
+   - ✅ All of the validation items defined in the file
+
+5. **Run validation commands** (if possible):
+   ```bash
+   terraform fmt -check
+   terraform validate
+   ```
+
+**NEVER SKIP THIS VALIDATION** - If standards are not met, either:
+- Fix the files to meet standards, OR
+- Document deviations with justification and remediation plan
+
 * Changes to include:
-  1. Add `.github/pull_request_template.md` (use the exact template below), if it is not already in the origin
-  2. Commit all of the files that were added by the user
-  3. Adhere to the conventional commit principle for all commits
+  1. **FIRST**: Validate all Terraform files against security.md and standards.md
+  2. Add `.github/pull_request_template.md` (use the exact template below), if it is not already in the origin
+  3. Commit all of the files that were added by the user
+  4. Adhere to the conventional commit principle for all commits
 
 * Then open a PR with:
   * **Title:** `feat: <concise summary>`
   * **Body:** Render our `.github/pull_request_template.md` with sensible entries (don't leave sections blank).
+  * **IMPORTANT**: In the PR body, include a "Security & Standards Compliance" section listing:
+    - All security.md checklist items validated ✅
+    - All standards.md checklist items validated ✅
+    - Any deviations with justification
   * Labels: `ready-for-review`
   * Reviewers: `@org/reviewers-team` (or specific usernames)
 
@@ -248,25 +282,55 @@ Ensure that working branch adheres to the following naming convention: `feat/<<u
 
 # Summary
 <fill>
+
 ## Type of change
 - [ ] Feature
 - [ ] Bug fix
 - [ ] Refactor
 - [ ] Docs
 - [ ] Chore
+
 ## Linked issues / tickets
 <fill>
+
 ## Implementation notes
 <fill>
+
+## Security & Standards Compliance (Required for Terraform changes)
+**Security.md Checklist:**
+- [ ] TLS 1.2+ enforced
+- [ ] Diagnostic logging enabled
+- [ ] Managed identities used (no embedded secrets)
+- [ ] Public blob access disabled (unless justified)
+- [ ] Network rules/private endpoints configured
+- [ ] Encryption at rest enabled
+- [ ] Soft delete and lifecycle policies configured
+- [ ] Sensitive outputs marked as sensitive
+
+**Standards.md Checklist:**
+- [ ] Module naming: `pdm-tf-module-{description}`
+- [ ] Complete module structure (README, main, variables, outputs, versions, locals, examples, CHANGELOG)
+- [ ] All variables typed with descriptions and validations
+- [ ] Secure-by-default configurations
+- [ ] Proper tagging (environment, project, owner, compliance-level)
+- [ ] Root structure includes env/dev, env/pp, env/pr with tfvars
+- [ ] Module is idempotent
+
+**Deviations from standards (if any):**
+<fill - list any deviations with justification and remediation plan>
+
 ## Screenshots / Demos (if UI)
 <fill>
+
 ## Risks & Rollback
 <fill>
+
 ## Checklist
 - [ ] Unit/Integration tests added or updated
 - [ ] Docs updated (README/ADR/changelog)
 - [ ] Security/PII reviewed
 - [ ] Performance considerations
+- [ ] Terraform fmt and validate passed (for Terraform changes)
 ```
 Use the GitHub tools to:
 1. create a branch from `main`,
