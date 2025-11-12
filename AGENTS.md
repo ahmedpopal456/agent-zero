@@ -180,6 +180,7 @@ IMPORTANT
 - **NEVER** execute page updates if the user is locally on another branch than `main`. If they are on the `main` branch, then ensure that NO changes are pending (abort the operation if there are)
 - **ALWAYS** verify tag placement for EVERY diagram/content before calling `updateConfluencePage`
 - **MANDATORY CHECK:** Count the number of content sections (images or embedded markdown) and verify the same number of corresponding tags exist, each placed directly below its content
+- **CRITICAL - UPDATE ALL DIAGRAMS ON PAGE:** When updating a Confluence page, you MUST check for ALL diagram tags (e.g., `<!-- AZURE-ARCHITECTURE-DIAGRAM-ID-001 -->`, `<!-- AZURE-DATA-FLOW-DIAGRAM-ID-001 -->`, etc.) and ensure EVERY tag has its corresponding content (image reference or embedded markdown) placed directly above it. DO NOT leave any tags without their content. If a diagram file exists in the repository for a tag found on the page, add the appropriate image reference or markdown content above that tag.
 
 ## Using Terraform guidelines as additional agent context
 
